@@ -726,9 +726,9 @@ class MangaTranslator:
             self._mark_context_failure(ctx, e, stage='saving')
             return False
 
-    def _save_text_to_file(self, image_path: str, ctx: Context, config: Config = None) -> bool:
+    def _save_text_to_file(self, image_path: str, ctx: Context, config: Config = None, text_output_file: str = None) -> bool:
         """保存/回写文本区域到JSON（含translation、font_size等渲染后字段），使用新的目录结构"""
-        text_output_file = self.text_output_file
+        text_output_file = text_output_file or self.text_output_file
         if not text_output_file:
             # 使用新的路径管理器生成JSON路径
             text_output_file = get_json_path(image_path, create_dir=True)
@@ -1184,6 +1184,10 @@ class MangaTranslator:
         input_image = getattr(ctx, 'input', None)
         image_path = getattr(input_image, 'name', None)
         if not image_path:
+            return None
+
+        # Extreme Mode keeps all generated data in its isolated output run.
+        if getattr(getattr(config, 'cli', None), 'extreme_mode', False):
             return None
 
         has_colorized = config.colorizer.colorizer != Colorizer.none
@@ -3600,6 +3604,14 @@ class MangaTranslator:
 
     async def translate_batch(self, images_with_configs: List[tuple], batch_size: int = None, image_names: List[str] = None, save_info: dict = None, global_offset: int = 0, global_total: int = None) -> List[Context]:
         """Translate a complete ordered input list and return processed and skipped results."""
+        extreme_enabled = any(
+            getattr(getattr(config, "cli", None), "extreme_mode", False)
+            for _image, config in images_with_configs
+        )
+        if extreme_enabled:
+            from .extreme_mode import run_extreme_mode
+
+            return await run_extreme_mode(self, images_with_configs, save_info)
         if self.filter_text_enabled:
             from .utils.text_filter import load_filter_list
             load_filter_list(force_reload=True)

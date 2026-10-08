@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QHBoxLayout, QSpinBox, QVBoxLayout, QWidget
 from qfluentwidgets import (
     BodyLabel,
     CardWidget,
@@ -103,10 +103,33 @@ def create_translation_page(self) -> QWidget:
         self._t("Colorize Only"),
         self._t("Upscale Only"),
         self._t("Inpaint Only"),
-        self._t("Replace Translation")
+        self._t("Replace Translation"),
+        self._t("Extreme Mode")
     ])
     self.workflow_mode_combo.currentIndexChanged.connect(self._on_workflow_mode_changed)
     task_layout.addWidget(self.workflow_mode_combo)
+
+    self.extreme_settings_widget = QWidget()
+    extreme_layout = QVBoxLayout(self.extreme_settings_widget)
+    extreme_layout.setContentsMargins(0, 0, 0, 0)
+    self.extreme_context_label = BodyLabel(self._t("Extreme context pages (before / after):"))
+    extreme_layout.addWidget(self.extreme_context_label)
+    context_row = QHBoxLayout()
+    self.extreme_lookback_spin = QSpinBox()
+    self.extreme_lookahead_spin = QSpinBox()
+    for spin in (self.extreme_lookback_spin, self.extreme_lookahead_spin):
+        spin.setRange(0, 20)
+        context_row.addWidget(spin)
+    extreme_layout.addLayout(context_row)
+    self.extreme_vision_label = BodyLabel(self._t("Vision model (blank uses translation model):"))
+    extreme_layout.addWidget(self.extreme_vision_label)
+    self.extreme_vision_input = LineEdit()
+    extreme_layout.addWidget(self.extreme_vision_input)
+    self.extreme_settings_widget.setVisible(False)
+    task_layout.addWidget(self.extreme_settings_widget)
+    self.extreme_lookback_spin.valueChanged.connect(self._on_extreme_settings_changed)
+    self.extreme_lookahead_spin.valueChanged.connect(self._on_extreme_settings_changed)
+    self.extreme_vision_input.editingFinished.connect(self._on_extreme_settings_changed)
 
     self.start_button = PrimaryPushButton(self._t("Start Translation"))
     self.start_button.setFixedHeight(44)

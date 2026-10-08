@@ -1,4 +1,9 @@
 {
+  "Extreme Mode": "极致模式",
+  "Start Extreme Translation": "开始极致翻译",
+  "Extreme context pages (before / after):": "参考页数（前／后）：",
+  "Vision model (blank uses translation model):": "图像分析模型（留空则使用翻译模型）：",
+  "Tip: Read every page and analyze its image before translating with past and future context. Requires an image-capable OpenAI-compatible model.": "翻译前先分析每页图片与文字，再参考前后页内容。需要支持图像输入的 OpenAI 兼容模型。",
   "Manga Translator": "Manga Translator UI",
   "&File": "&文件",
   "&Add Files...": "&添加文件...",

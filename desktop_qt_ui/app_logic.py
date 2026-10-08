@@ -2956,7 +2956,10 @@ class TranslationWorker(QObject):
             workflow_mode = 'Normal Translation'
             workflow_tip = ""
             cli_config = self.config_dict.get('cli', {})
-            if cli_config.get('upscale_only', False):
+            if cli_config.get('extreme_mode', False):
+                workflow_mode = 'Extreme Mode'
+                workflow_tip = 'Tip: Read every page and analyze its image before translating with past and future context. Requires an image-capable OpenAI-compatible model.'
+            elif cli_config.get('upscale_only', False):
                 workflow_mode = 'Upscale Only'
                 workflow_tip = 'Tip: Only upscale images, no detection, OCR, translation or rendering'
             elif cli_config.get('colorize_only', False):
@@ -2998,6 +3001,8 @@ class TranslationWorker(QObject):
             self._log_info('📁 Output directory: {dir}'.format(dir=self.output_folder))
             if workflow_tip:
                 self._log_info(workflow_tip)
+            if cli_config.get('extreme_mode', False):
+                self._log_info('Extreme outputs are stored in {dir}'.format(dir=os.path.join(self.output_folder, 'extreme', '<run-id>')))
             self._log_info('🚀 Starting translation...')
             emit_eta_progress(0, total_images, "处理中")
             if total_images > 0:

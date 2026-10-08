@@ -1,4 +1,9 @@
 {
+  "Extreme Mode": "Modo extremo",
+  "Start Extreme Translation": "Iniciar traducción extrema",
+  "Extreme context pages (before / after):": "Páginas de contexto (anteriores / posteriores):",
+  "Vision model (blank uses translation model):": "Modelo de visión (vacío: usar modelo de traducción):",
+  "Tip: Read every page and analyze its image before translating with past and future context. Requires an image-capable OpenAI-compatible model.": "Analiza la imagen y el texto de cada página antes de traducir con el contexto anterior y posterior. Requiere un modelo compatible con OpenAI que acepte imágenes.",
   "Manga Translator": "Manga Translator UI",
   "&File": "&Archivo",
   "&Add Files...": "&Agregar archivos...",

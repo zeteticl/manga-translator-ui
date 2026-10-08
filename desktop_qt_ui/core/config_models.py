@@ -153,6 +153,10 @@ class CliSettings(BaseModel):
     save_quality: int = 100
     batch_size: int = 1
     batch_concurrent: bool = False
+    extreme_mode: bool = False
+    extreme_lookback_pages: int = Field(default=3, ge=0, le=20)
+    extreme_lookahead_pages: int = Field(default=2, ge=0, le=20)
+    extreme_vision_model: Optional[str] = None
     generate_and_export: bool = False
     colorize_only: bool = False
     upscale_only: bool = False  # 仅超分模式

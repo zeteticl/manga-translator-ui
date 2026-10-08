@@ -119,6 +119,7 @@ class MainView(QObject):
     set_stopping_state = main_view_runtime.set_stopping_state
     _sync_workflow_mode_from_config = main_view_runtime.sync_workflow_mode_from_config
     _on_workflow_mode_changed = main_view_runtime.on_workflow_mode_changed
+    _on_extreme_settings_changed = main_view_runtime.on_extreme_settings_changed
     _update_workflow_mode_description = main_view_runtime.update_workflow_mode_description
     update_start_button_text = main_view_runtime.update_start_button_text
 
@@ -430,12 +431,16 @@ class MainView(QObject):
                         self._t("Upscale Only"),
                         self._t("Inpaint Only"),
                         self._t("Replace Translation"),
+                        self._t("Extreme Mode"),
                     ]
                 )
                 self.workflow_mode_combo.setCurrentIndex(current_index)
             finally:
                 self.workflow_mode_combo.blockSignals(False)
         self._update_workflow_mode_description(current_index)
+        if hasattr(self, "extreme_context_label"):
+            self.extreme_context_label.setText(self._t("Extreme context pages (before / after):"))
+            self.extreme_vision_label.setText(self._t("Vision model (blank uses translation model):"))
 
         self.update_start_button_text()
 
