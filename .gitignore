@@ -215,6 +215,9 @@ manga_translator/server/data/
 
 # Scripts directory (脚本目录)
 scripts/
+!scripts/
+scripts/*
+!scripts/benchmark_translation_context.py
 
 .gemini/
 gha-creds-*.json
